@@ -1,4 +1,5 @@
 import { FontAwesome } from "@expo/vector-icons";
+import axios from "axios";
 import {
   StyleSheet,
   Text,
@@ -19,12 +20,15 @@ export default function URLInput({
   urlValue,
 }: URLInputProps) {
   const handleAdd = () => {
-    fetch(`http://${urlValue}.local:80/`)
-      .then((res: Response) => res.json())
-      .then((data: any) => {
-        setter(data.commands);
-        console.log(data.commands);
+    try {
+      axios.get(`http://${urlValue}.local:80/`).then((res) => {
+        setter(res.data.commands);
+        alert(res.data.commands);
       });
+    } catch (e) {
+      alert(e);
+      console.log(e);
+    }
   };
   return (
     <View style={styles.content}>
