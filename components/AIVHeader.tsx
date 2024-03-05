@@ -1,10 +1,10 @@
 import { FontAwesome } from "@expo/vector-icons";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-export default function AIVHeader() {
+export default function AIVHeader({setModalState}:{setModalState:(state:boolean) => void}){
   return (
     <View style={styles.header}>
-      <FontAwesome name="bars" size={24} color="white" />
+      <FontAwesome onPress={()=>{setModalState(true)}} name="bars" size={24} color="white" />
       <Text style={styles.text}>AI VISION</Text>
     </View>
   );
