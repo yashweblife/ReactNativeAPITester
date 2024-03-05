@@ -1,4 +1,5 @@
-import { Text, TouchableHighlight, View } from "react-native";
+import axios from "axios";
+import { StyleSheet, Text, TouchableHighlight, View } from "react-native";
 
 type CommandListProps = {
   list: string[];
@@ -6,38 +7,47 @@ type CommandListProps = {
 };
 
 export default function CommandList({ list, urlInput }: CommandListProps) {
+  const handleClick = (data: string) => {
+    try {
+      axios.get(`http://${urlInput}.local:80/${data}`);
+    } catch (err) {
+      console.log(err);
+      alert(err);
+    }
+  };
+
   return (
-    <View
-      style={{
-        width: "100%",
-        padding: 32,
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-evenly",
-      }}
-    >
+    <View style={styles.container}>
       {list.length > 0 &&
         list.map((command: string) => (
           <TouchableHighlight
             key={command}
-            onPress={() => {
-              fetch(`http://${urlInput}.local:80/${command}`);
-            }}
-            style={{
-              width: "100%",
-              flex: 1,
-              padding: 8,
-              margin: 4,
-              alignItems: "center",
-              backgroundColor: "#aadaff",
-              borderRadius: 5,
-            }}
+            onPress={() => handleClick(command)}
+            style={styles.list}
           >
-            <Text style={{ fontSize: 24, color: "white" }}>
-              {command.toUpperCase()}
-            </Text>
+            <Text style={styles.text}>{command.toUpperCase()}</Text>
           </TouchableHighlight>
         ))}
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    width: "100%",
+    padding: 32,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-evenly",
+  },
+  list: {
+    width: "100%",
+    flex: 1,
+    padding: 8,
+    margin: 4,
+    alignItems: "center",
+    backgroundColor: "#aadaff",
+    borderRadius: 5,
+  },
+  text: { fontSize: 24, color: "white" },
+});
