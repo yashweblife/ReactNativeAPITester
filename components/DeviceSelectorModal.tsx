@@ -1,58 +1,35 @@
 import { FontAwesome } from "@expo/vector-icons";
+import { useContext, useEffect, useState } from "react";
 import {
-    Modal,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableHighlight,
-    View
+  Modal,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableHighlight,
+  View
 } from "react-native";
+
+import { DeviceContext } from "../context/deviceContext";
 
 export default function DeviceSelectorModal({
   setSelectedDevice,
   modalState = false,
   setModalState,
 }: DeviceSelectorModalProps) {
-  const devices = [
-    {
-      name: "Device 1",
-      url: "apitester",
-      info: "This is a test device to test API.",
-      commands: ["on", "off", "blink"],
-    },
-    {
-      name: "Device 2",
-      url: "plantsystem",
-      info: "This is a plant watering system.",
-      commands: ["water-on", "water-off", "light-on", "light-off"],
-    },
-    {
-        name: "Device 2",
-        url: "plantsystem",
-        info: "This is a plant watering system.",
-        commands: ["water-on", "water-off", "light-on", "light-off"],
-      },    {
-        name: "Device 2",
-        url: "plantsystem",
-        info: "This is a plant watering system.",
-        commands: ["water-on", "water-off", "light-on", "light-off"],
-      },    {
-        name: "Device 2",
-        url: "plantsystem",
-        info: "This is a plant watering system.",
-        commands: ["water-on", "water-off", "light-on", "light-off"],
-      },    {
-        name: "Device 2",
-        url: "plantsystem",
-        info: "This is a plant watering system.",
-        commands: ["water-on", "water-off", "light-on", "light-off"],
-      },    {
-        name: "Device 2",
-        url: "plantsystem",
-        info: "This is a plant watering system.",
-        commands: ["water-on", "water-off", "light-on", "light-off"],
-      },
-  ];
+  
+  const [devices, setDevices] = useState([] as DeviceData[])
+  const dc = useContext(DeviceContext)
+  useEffect(()=>{
+    for(let i=0;i<10;i++){
+      dc.addDevice({
+        name: `Device ${i}`,
+        url: "http://apitester.local:80",
+        info: "This is a test device",
+        commands: ["on", "off", "blink"],
+      })
+      setDevices(dc.list)
+    }
+  },[])
 
   return (
     <Modal visible={modalState} style={styles.modal}>
@@ -78,7 +55,7 @@ export default function DeviceSelectorModal({
         <ScrollView>
         {devices.map((device) => {
           return (
-            <TouchableHighlight style={styles.item} onPress={()=>{
+            <TouchableHighlight key={Date.now()} style={styles.item} onPress={()=>{
                 setSelectedDevice(device);
                 setModalState(false);
             }}>
@@ -92,7 +69,7 @@ export default function DeviceSelectorModal({
                   style={styles.commandList}
                 >
                   {device.commands.map((command) => {
-                    return <Text style={styles.commandName}>{command}</Text>;
+                    return <Text style={styles.commandName}>{command.toUpperCase()}</Text>;
                   })}
                 </View>
               </View>
