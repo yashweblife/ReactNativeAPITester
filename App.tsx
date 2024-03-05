@@ -2,17 +2,21 @@ import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import AIVHeader from "./components/AIVHeader";
 import CommandList from "./components/CommandList";
+import DeviceSelectorModal from "./components/DeviceSelectorModal";
 import URLInput from "./components/URLInput";
 
 export default function App() {
   const [urlInput, setUrlInput] = useState("apitester");
   const [commands, setCommands] = useState([]);
+  const [modalState, setModalState] = useState(false);
+  const [selectedDevice, setSelectedDevice] = useState({} as DeviceData);
   return (
     <View style={styles.container}>
-      <AIVHeader />
+      <DeviceSelectorModal setSelectedDevice={setSelectedDevice} modalState={modalState} setModalState={setModalState}></DeviceSelectorModal>
+      <AIVHeader setModalState={setModalState}/>
       <URLInput
         urlValue={urlInput}
-        setter={setCommands}
+        setCommands={setCommands}
         inputHandler={setUrlInput}
       ></URLInput>
       <CommandList list={commands} urlInput={urlInput}></CommandList>
