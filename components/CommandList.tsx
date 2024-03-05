@@ -1,10 +1,7 @@
 import axios from "axios";
 import { StyleSheet, Text, TouchableHighlight, View } from "react-native";
 
-type CommandListProps = {
-  list: string[];
-  urlInput: string;
-};
+
 
 export default function CommandList({ list, urlInput }: CommandListProps) {
   const handleClick = (data: string) => {
@@ -19,13 +16,14 @@ export default function CommandList({ list, urlInput }: CommandListProps) {
   return (
     <View style={styles.container}>
       {list.length > 0 &&
-        list.map((command: string) => (
+        list.map((command: CommandData) => (
           <TouchableHighlight
-            key={command}
-            onPress={() => handleClick(command)}
+            key={command.name}
+            onPress={() => handleClick(command.name)}
             style={styles.list}
+            onLongPress={() => alert(command.info)}
           >
-            <Text style={styles.text}>{command.toUpperCase()}</Text>
+            <Text style={styles.text}>{command.name.toUpperCase()}</Text>
           </TouchableHighlight>
         ))}
     </View>

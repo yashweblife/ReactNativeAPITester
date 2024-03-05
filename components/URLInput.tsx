@@ -8,22 +8,17 @@ import {
   View,
 } from "react-native";
 
-type URLInputProps = {
-  setter: Function;
-  inputHandler: (text: string) => void;
-  urlValue: string;
-};
 
 export default function URLInput({
-  setter,
+  setCommands,
   inputHandler,
   urlValue,
 }: URLInputProps) {
   const handleAdd = () => {
     try {
       axios.get(`http://${urlValue}.local:80/`).then((res) => {
-        setter(res.data.commands);
-        alert(res.data.commands);
+        const data:ReceivedDeviceInfo = res.data;
+        setCommands(data.commands);
       });
     } catch (e) {
       alert(e);
