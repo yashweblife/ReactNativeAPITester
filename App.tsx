@@ -7,14 +7,6 @@ import URLInput from "./components/URLInput";
 export default function App() {
   const [urlInput, setUrlInput] = useState("apitester");
   const [commands, setCommands] = useState([]);
-  const handleAdd = () => {
-    fetch(`http://${urlInput}.local:80/`)
-      .then((res: Response) => res.json())
-      .then((data: any) => {
-        alert(data.commands);
-        setCommands(data.commands);
-      });
-  };
   return (
     <View style={styles.container}>
       <AIVHeader />
